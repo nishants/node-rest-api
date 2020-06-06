@@ -1,19 +1,19 @@
 import {RedisClient} from 'redis';
 
 export default () => {
-    let client: RedisClient;
+    let redis: RedisClient;
 
-    return {
+    let client = {
         setDriver: (c: RedisClient) => {
-            client = c;
+            redis = c;
         },
         onError: (onError: Function) => {
             // @ts-ignore
-            client.on('error', onError);
+            redis.on('error', onError);
         },
         getObject: (key: string) => new Promise((resolve, reject) => {
             // @ts-ignore
-            client.get(key, (error, result) => {
+            redis.get(key, (error, result) => {
                 if (error) {
                     return reject(error);
                 }
@@ -22,7 +22,7 @@ export default () => {
         }),
         setObject: (key: string, value: any) => new Promise((resolve, reject) => {
             // @ts-ignore
-            client.set(key, JSON.stringify(value), (error, result) => {
+            redis.set(key, JSON.stringify(value), (error, result) => {
                 if (error) {
                     return reject(error);
                 }
@@ -31,7 +31,7 @@ export default () => {
         }),
         setString: (key: string, value: string) => new Promise((resolve, reject) => {
             // @ts-ignore
-            client.set(key, value, (error, result) => {
+            redis.set(key, value, (error, result) => {
                 if (error) {
                     return reject(error);
                 }
@@ -40,12 +40,27 @@ export default () => {
         }),
         getString: (key: string) => new Promise((resolve, reject) => {
             // @ts-ignore
-            client.get(key, (error, result) => {
+            redis.get(key, (error, result) => {
                 if (error) {
                     return reject(error);
                 }
                 resolve(result);
             });
+        }),
+        getAllKeys: () => new Promise((resolve, reject) => {
+            // @ts-ignore
+            redis.keys( '*',async (error, allKeys) => {
+                if (error) {
+                    return reject(error);
+                }
+                const result = {};
+                for(let i =0; i < allKeys.length; i++){
+                    // @ts-ignore
+                    result[allKeys[i]] = await client.getString(allKeys[i]);
+                }
+                resolve(result);
+            });
         })
     };
+    return client;
 };
