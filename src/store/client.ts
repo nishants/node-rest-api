@@ -1,15 +1,20 @@
+import {RedisClient} from 'redis';
 
-
-// @ts-ignore
-export default (client, onError) => {
-    client.on("error", onError);
+export default () => {
+    let client: RedisClient;
 
     return {
-        // @ts-ignore
-        getObject: (key) => new Promise((resolve, reject) => {
+        setDriver: (c: RedisClient) => {
+            client = c;
+        },
+        onError: (onError: Function) => {
+            // @ts-ignore
+            client.on('error', onError);
+        },
+        getObject: (key: string) => new Promise((resolve, reject) => {
             // @ts-ignore
             client.get(key, (error, result) => {
-                if(error){
+                if (error) {
                     return reject(error);
                 }
                 resolve(JSON.parse(result));
@@ -18,12 +23,12 @@ export default (client, onError) => {
         setObject: (key: string, value: any) => new Promise((resolve, reject) => {
             // @ts-ignore
             client.set(key, JSON.stringify(value), (error, result) => {
-                if(error){
+                if (error) {
                     return reject(error);
                 }
                 resolve(result);
             });
         })
 
-    }
+    };
 };

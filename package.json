@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "npx tsc",
-    "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "dev": "cross-env tsc-watch --onSuccess \"node ./dist/index.js\" ",
     "start": "npx pm2 start pm2.yaml",
     "test": "jest"
   },
@@ -52,7 +52,9 @@
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "@types/redis": "^2.8.22",
+    "cross-env": "^7.0.2",
     "cucumber": "^6.0.5",
+    "fakeredis": "^2.0.0",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5"
   }
