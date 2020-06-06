@@ -6,6 +6,10 @@
   "scripts": {
     "postinstall": "npx tsc",
     "dev": "cross-env tsc-watch --onSuccess \"node ./dist/index.js\" ",
+    "compile": "tsc -p ./",
+    "cucumber": "cucumber-js",
+    "test:features": "cross-env tsc-watch --onSuccess \"npm run cucumber\"",
+    "test:features:ci": "run-s compile cucumber",
     "start": "npx pm2 start pm2.yaml",
     "test": "jest"
   },
@@ -56,6 +60,7 @@
     "cucumber": "^6.0.5",
     "fakeredis": "^2.0.0",
     "jest": "^23.6.0",
+    "npm-run-all": "^4.1.5",
     "ts-jest": "^23.10.5"
   }
 }
