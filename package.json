@@ -10,7 +10,7 @@
     "cucumber": "cucumber-js",
     "test:features": "NODE_ENV=feature_test cross-env tsc-watch --onSuccess \"npm run cucumber\"",
     "test:features:ci": "NODE_ENV=feature_test run-s compile cucumber",
-    "start": "npx pm2 start pm2.yaml",
+    "start": "node dist/index.js",
     "test": "jest"
   },
   "keywords": [],
