@@ -29,3 +29,8 @@ docker run --name "my-redis" -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
   ```
 
   
+
+
+
+node redis client : https://www.npmjs.com/package/redis
+

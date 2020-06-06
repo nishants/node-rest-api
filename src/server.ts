@@ -26,7 +26,10 @@ const server = http.createServer(router);
 
 (async() => {
     // TODO remove this
-    await redis(console.error);
+    const client = await redis(console.error);
+    await client.setObject("key-1", {key: 'key-1'})
+    const value = await client.getObject('key-1');
+    console.log("value form redis : ", value);
 })();
 
 server.listen(PORT, () =>
