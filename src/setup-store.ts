@@ -1,15 +1,12 @@
-import store, {setDriver} from './store';
+import config from 'config';
 
-const redisDriver = process.env.FAKE_REDIS ? require('fakeredis') : require('redis');
+import {setDriver} from './store';
 
-setDriver(redisDriver);
+const useFakeRedis = config.get('redis.fake');
 
-if(process.env.FAKE_REDIS){
+const redisDriver = useFakeRedis ? require('fakeredis') : require('redis');
+if(useFakeRedis){
     console.log("Using fake redis");
 }
 
-(async() => {
-  await store.setObject("key-1", {key: 'key-1'})
-  const value = await store.getObject('key-1');
-  console.log("value form redis : ", value);
-})();
+setDriver(redisDriver);

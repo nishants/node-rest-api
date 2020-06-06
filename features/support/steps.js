@@ -1,6 +1,10 @@
 const { Given, When, Then } = require("cucumber");
 const expect = require('expect');
 const axios = require('axios');
+const config = require('config');
+
+const serverConfig = config.get('server');
+const apiUrl = () => `${serverConfig.protocol}://${serverConfig.host}:${serverConfig.port}/api/v1`
 
 Given("a variable set to {int}", function(number) {
   this.setTo(number);
@@ -26,12 +30,11 @@ Given("I save values to store", async function () {
     query += `${encodeURIComponent(entry[0])}=${encodeURIComponent(entry[1])}`;
   })
 
-  let url = `http://localhost:3000/api/v1/health/set-value${query}`;
-  console.log(url)
+  const url = `${apiUrl()}/health/set-value${query}`;
   await axios.get(url)
 });
 
 Given("I should get correct values from store for {string}", async function (key) {
-  const {data} = await axios.get('http://localhost:3000/api/v1/health/all-data')
+  const {data} = await axios.get(`${apiUrl()}/health/all-data`)
   expect(data[key]).toEqual(this.getTestData()[key]);
 });
