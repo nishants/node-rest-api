@@ -28,7 +28,24 @@ export default () => {
                 }
                 resolve(result);
             });
+        }),
+        setString: (key: string, value: string) => new Promise((resolve, reject) => {
+            // @ts-ignore
+            client.set(key, value, (error, result) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(result);
+            });
+        }),
+        getString: (key: string) => new Promise((resolve, reject) => {
+            // @ts-ignore
+            client.get(key, (error, result) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(result);
+            });
         })
-
     };
 };
